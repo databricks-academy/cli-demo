@@ -63,6 +63,10 @@ Temp.join()
 
 # COMMAND ----------
 
+Temp.report()
+
+# COMMAND ----------
+
 Temp.report(Temp.joint_df)
 
 # COMMAND ----------
@@ -123,3 +127,7 @@ Temp.report()
 
 Temp.join()
 Temp.report()
+
+# COMMAND ----------
+
+

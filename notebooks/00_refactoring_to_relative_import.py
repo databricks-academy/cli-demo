@@ -62,6 +62,10 @@ todays_temp.join()
 
 # COMMAND ----------
 
+# MAGIC %sh ls 
+
+# COMMAND ----------
+
 # MAGIC %sh ls ./helpers
 
 # COMMAND ----------
@@ -91,7 +95,11 @@ todays_temp = Temperature(spark=spark,
 
 # COMMAND ----------
 
+todays_temp.join()
 
+# COMMAND ----------
+
+todays_temp.report(todays_temp.joint_df)
 
 # COMMAND ----------
 
@@ -159,3 +167,7 @@ sys.path.append(f"/Workspace/Repos/{username}/cli-demo-2")
 
 # Profit
 from wheel.weather.temp import Temperature
+
+# COMMAND ----------
+
+
