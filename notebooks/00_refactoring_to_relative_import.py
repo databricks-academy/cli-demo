@@ -42,6 +42,10 @@ todays_temp = Temperature(spark=spark,
 
 # COMMAND ----------
 
+todays_temp.join()
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC While Databricks notebooks will all support this functionality, some users may wish to write and manage code in a way closer to their local laptop experience. 
 # MAGIC 
@@ -70,7 +74,14 @@ todays_temp = Temperature(spark=spark,
 
 # COMMAND ----------
 
-from helpers.weather import Temperature
+from helpers.weather_new import Temperature
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Note that while this notebook is a Python file, relative imports will only work if the `.py` extension appears here.
+# MAGIC 
+# MAGIC We can copy the file contents to a new file and accomplish this.
 
 # COMMAND ----------
 
@@ -80,12 +91,7 @@ todays_temp = Temperature(spark=spark,
 
 # COMMAND ----------
 
-todays_temp.report()
 
-# COMMAND ----------
-
-todays_temp.join()
-todays_temp.report()
 
 # COMMAND ----------
 
@@ -99,13 +105,21 @@ todays_temp.report()
 # COMMAND ----------
 
 import sys
+sys.path
+
+# COMMAND ----------
+
 import os
-sys.path.append(os.path.abspath('..'))
+sys.path.append(os.path.abspath('../wheel'))
+
+# COMMAND ----------
+
+sys.path
 
 # COMMAND ----------
 
 # Import now that we've appended to path
-from helpers.weatherhelper import Temperature
+from weather.temp import Temperature
 
 # COMMAND ----------
 
@@ -115,11 +129,7 @@ todays_temp = Temperature(spark=spark,
 
 # COMMAND ----------
 
-todays_temp.foo()
-
-# COMMAND ----------
-
-# MAGIC %md But that's not it. We could import from another repo as well! Let's clone a second repository from our Git hosting service, then we'll import from that repo.
+# MAGIC %md But that's not it. We could import from another repo as well! Let's clone the same repository with a new name `cli-demo-2`
 
 # COMMAND ----------
 
@@ -143,21 +153,9 @@ print(username)
 
 # Number 1.) Absolute add
 import sys
-sys.path.append(f"/Workspace/Repos/{username}/db-in-prod")
-
-# COMMAND ----------
-
-# MAGIC %md 
-# MAGIC Or:
-
-# COMMAND ----------
-
-# Number 2.) Relative add
-import sys
-import os
-sys.path.append(os.path.abspath('../../test'))
+sys.path.append(f"/Workspace/Repos/{username}/cli-demo-2")
 
 # COMMAND ----------
 
 # Profit
-from testfile import TheTemp
+from wheel.weather.temp import Temperature
