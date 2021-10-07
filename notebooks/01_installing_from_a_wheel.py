@@ -106,9 +106,9 @@ sys.path.append(os.path.abspath('../wheel'))
 
 # COMMAND ----------
 
-from weather import temp_new
+from weather import temp
 
-Temp = temp_new.Temperature(spark=spark, low_path="/databricks-datasets/weather/low_temps", high_path="/databricks-datasets/weather/high_temps")
+Temp = temp.Temperature(spark=spark, low_path="/databricks-datasets/weather/low_temps", high_path="/databricks-datasets/weather/high_temps")
 
 Temp.report()
 
