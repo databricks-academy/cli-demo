@@ -28,6 +28,7 @@ password <token-value>
 | --- | --- |
 | Workspace URL | `https://abc-d1e2345f-a6b2.cloud.databricks.com` |
 | `<databricks-instance>` | `abc-d1e2345f-a6b2.cloud.databricks.com` |
+| **WARNING** | If using the web terminal, the workspace URL displayed in the web terminal will not be equivalent to the URL for the normal Databricks workspace |
 
 * `token` is literally the string `token` (this tells the API we're using a token to validate)
 * `<token-value>` is a [personal access token generated in User Settings](https://docs.databricks.com/sql/user/security/personal-access-tokens.html)
