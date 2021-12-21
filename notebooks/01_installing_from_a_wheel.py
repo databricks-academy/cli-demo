@@ -35,7 +35,7 @@ from weather import temp
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Now we can install our module.
+# MAGIC Now we can import our module.
 
 # COMMAND ----------
 
@@ -44,7 +44,7 @@ from weather import temp
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC The following code demonstrates the current behavior of this module.
+# MAGIC You take over maintenance of a notebook that has the following logic.
 
 # COMMAND ----------
 
@@ -55,7 +55,7 @@ Temp = temp.Temperature(spark=spark, low_path="/databricks-datasets/weather/low_
 try:
     Temp.joint_df
 except AttributeError:
-    print("Run .join() method to create joint_df")
+    raise(AttributeError("Run .join() method to create joint_df"))
 
 # COMMAND ----------
 
@@ -76,6 +76,8 @@ display(Temp.joint_df)
 # MAGIC ## Updating the Code
 # MAGIC 
 # MAGIC While this pattern will work in production, perhaps we'd like to update the code in our `temp` function.
+# MAGIC 
+# MAGIC Specifically, we've decided that we want our `.report()` method to always print out the summary statistics and preview for our `joint_df`.
 # MAGIC 
 # MAGIC Doing this with a Wheel would require that we completely rebuild the wheel file prior to testing the results.
 # MAGIC 
