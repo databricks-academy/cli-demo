@@ -23,9 +23,6 @@ class Temperature:
                     col("temp").alias("low_temp")
                 ), ['date'], how="inner"))
                 
-    def report(self):
-        try:
-            self.joint_df.summary().show()
-            self.joint_df.limit(10).show()
-        except AttributeError:
-            raise(AttributeError("Run .join() before reporting"))
+    def report(self, df):
+        df.summary().show()
+        df.limit(10).show()
