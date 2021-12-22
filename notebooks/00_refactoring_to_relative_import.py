@@ -62,6 +62,10 @@ todays_temp.join()
 
 # COMMAND ----------
 
+# MAGIC %sh ls
+
+# COMMAND ----------
+
 # MAGIC %sh ls ./helpers
 
 # COMMAND ----------
@@ -91,7 +95,7 @@ todays_temp = Temperature(spark=spark,
 
 # COMMAND ----------
 
-
+todays_temp
 
 # COMMAND ----------
 
