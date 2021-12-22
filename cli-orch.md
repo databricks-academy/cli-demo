@@ -63,7 +63,19 @@ You can see the cluster spinning up in the workspace. We've previously scheduled
 Back in the terminal, list all the jobs in the workspace by running
 
 ```
-databricks jobs list
+databricks jobs list 
+```
+
+You may see a warning message around the jobs API version. Because we're working with multi-task jobs, go ahead and run the suggested command to use the jobs API version 2.1:
+
+```
+databricks jobs configure --version=2.1
+```
+
+If you need to configure your API version, rerun the list command to get your job ID:
+
+```
+databricks jobs list 
 ```
 
 Find your job and replace the `<job_id>` to execute the following command:
