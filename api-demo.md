@@ -4,7 +4,7 @@ In this lesson, you'll explore how the REST API can be leveraged to programmatic
 
 **NOTE**: All instructions assume a standard UNIX command line. These commands can be executed leveraging the [Databricks web terminal app](https://docs.databricks.com/clusters/web-terminal.html). If using the web terminal, prevent your session from being interrupted by running `tmux` to begin.
 
-## Configure Token Authentication
+## 1. Configure Token Authentication
 
 For this demo, credentials will be stored in a `.netrc` file on the local machine.
 
@@ -43,7 +43,7 @@ cat ~/.netrc
 
 This should print out the 3 lines of text in the file you just wrote.
 
-## Call the REST API
+## 2. Call the REST API
 
 Now you'll execute your first command using CURL.
 
@@ -55,7 +55,7 @@ Here, the `<workspace-url>` includes the `https://`, e.g., `https://abc-d1e2345f
 
 The result will be in JSON format, but will not be easy to parse in the command line.
 
-## Install JSON Parser and Re-run REST API Call
+## 3. Install JSON Parser and Re-run REST API Call
 
 Install the lightweight JSON parser `jq` by executing the following code:
 

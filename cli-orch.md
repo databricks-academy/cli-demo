@@ -4,7 +4,7 @@ In this series of labs, we'll complete a basic overview of the Databricks CLI.
 
 The instructions will work in any terminal. Databricks clusters have a web-based terminal accessible by going to the **Clusters** tab, selecting your active cluster, clicking the **Apps** tab and then **Launch Web Terminal**.
 
-## Basic CLI Installation and Usage
+## 1. Basic CLI Installation and Usage
 
 Once you have a terminal open, begin by installing the Databricks CLI using `pip`.
 
@@ -42,7 +42,7 @@ databricks clusters list
 
 You should see a list of all the clusters configured in your workspace.
 
-## Basic Job Orchestration
+## 2. Basic Job Orchestration
 
 While Databricks supports official connectors for a number of popular orchestration tools, the same functionality can be achieved by writing custom logic using the CLI or [REST API](https://docs.databricks.com/dev-tools/api/latest/index.html) and your tool of choice. We'll explore basic functionality for working with clusters, jobs, and runs in this lab.
 
