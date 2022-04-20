@@ -4,7 +4,7 @@ In this series of labs, we'll complete a basic overview of the Databricks CLI.
 
 The instructions will work in any terminal. Databricks clusters have a web-based terminal accessible by going to the **Clusters** tab, selecting your active cluster, clicking the **Apps** tab and then **Launch Web Terminal**.
 
-## Basic CLI Installation and Usage
+## 1. Basic CLI Installation and Usage
 
 Once you have a terminal open, begin by installing the Databricks CLI using `pip`.
 
@@ -42,7 +42,7 @@ databricks clusters list
 
 You should see a list of all the clusters configured in your workspace.
 
-## Basic Job Orchestration
+## 2. Basic Job Orchestration
 
 While Databricks supports official connectors for a number of popular orchestration tools, the same functionality can be achieved by writing custom logic using the CLI or [REST API](https://docs.databricks.com/dev-tools/api/latest/index.html) and your tool of choice. We'll explore basic functionality for working with clusters, jobs, and runs in this lab.
 
@@ -52,7 +52,7 @@ While most jobs will run against Jobs Clusters (which have a lower cost and term
 databricks clusters list
 ```
 
-If there's a currently inactive (terminated) cluster that you'd like to start, replace the `<cluster-id>` in the following line and execute the command.
+If there's a currently inactive (terminated) cluster that you'd like to start, replace the `<cluster_id>` in the following line and execute the command.
 
 ```
 databricks clusters start --cluster-id <cluster_id>
@@ -63,10 +63,22 @@ You can see the cluster spinning up in the workspace. We've previously scheduled
 Back in the terminal, list all the jobs in the workspace by running
 
 ```
-databricks jobs list
+databricks jobs list 
 ```
 
-Find your job and replace the `<job-id>` to execute the following command:
+You may see a warning message around the jobs API version. Because we're working with multi-task jobs, go ahead and run the suggested command to use the jobs API version 2.1:
+
+```
+databricks jobs configure --version=2.1
+```
+
+If you need to configure your API version, rerun the list command to get your job ID:
+
+```
+databricks jobs list 
+```
+
+Find your job and replace the `<job_id>` to execute the following command:
 
 ```
 databricks jobs get --job-id <job_id>
@@ -78,19 +90,21 @@ This will print out the full details of your job as a JSON. This output is exact
 databricks jobs create -h
 ```
 
-For now, we'll just trigger a run of the job we defined in the UI. Use the same `<job-id>` in the following command:
+For now, we'll just trigger a run of the job we defined in the UI. Use the same `<job_id>` in the following command:
 
 ```
 databricks jobs run-now --job-id <job_id>
 ```
 
-This command will output the run-id for your job. Substitute this for `<run-id>` and execute the following:
+This command will output the run-id for your job.
+
+**NOTE**: Functionality has changed for getting run information with the introduction of multi-task jobs. A job run will contain multiple task runs. You can retrieve the run ID and progress of each task by substituting the `<job_run_id>` and execute the following:
 
 ```
-databricks runs get-output --run-id <run_id>
+databricks runs get --run-id <job_run_id>
 ```
 
-This will output the current status of your job. Execute this command a few times until you see `SUCCESS` returned as the status. If you run a notebook with an exist status, amongst the returned fields will be a `notebook_output` field. Using `--notebook-params` and `notebook_output`, you can build simple conditionals that trigger control flow in your notebook-based pipelines, and pass parameters and values between your orchestration tooling and your scheduled notebooks.
+This will output the current status of your job, as well as each of the tasks in the job. Exexcute the command multiple times to see the progress of your tasks. Note that on task run completion, a `run_page_url` will appear with a link back to the notebook output.
 
 To shut down your interactive cluster, use the same cluster ID as before to execute:
 

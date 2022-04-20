@@ -4,7 +4,7 @@ In this series of labs, we'll complete a basic overview of the Databricks CLI.
 
 The instructions will work in any terminal. Databricks clusters have a web-based terminal accessible by going to the **Clusters** tab, selecting your active cluster, clicking the **Apps** tab and then **Launch Web Terminal**.
 
-## Basic CLI Installation and Usage
+## 1. Basic CLI Installation and Usage
 
 Once you have a terminal open, begin by installing the Databricks CLI using `pip`.
 
@@ -42,7 +42,7 @@ databricks clusters list
 
 You should see a list of all the clusters configured in your workspace.
 
-## Importing and Installing Libraries and Notebooks
+## 2. Importing and Installing Libraries and Notebooks
 
 The [Databricks Repos](https://docs.databricks.com/repos.html) product makes Git integration with notebooks simple. That being said, it may require some updates to how you structure your projects in order to maximize the functionality. The CLI can also be extremely useful for moving notebooks and libraries from the workspace to a local machine and versioning with Git.
 
@@ -143,7 +143,7 @@ databricks workspace import -o -l PYTHON weather-notebook.py /cli-demo/weather-n
 
 Note that in both directions of our code migration, we used the `-o` flag to overwrite the target file. While in this case this had the desired effect of updating our notebook with the latest version of the file, be careful to avoid accidentally overwriting your work when splitting edits between multiple environments.
 
-## Basic Job Orchestration
+## 3. Basic Job Orchestration
 
 While Databricks supports official connectors for a number of popular orchestration tools, the same functionality can be achieved by writing custom logic using the CLI or [REST API](https://docs.databricks.com/dev-tools/api/latest/index.html) and your tool of choice. We'll explore basic functionality for working with clusters, jobs, and runs in this lab.
 
