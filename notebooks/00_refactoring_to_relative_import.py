@@ -7,6 +7,10 @@
 
 # COMMAND ----------
 
+1+1
+
+# COMMAND ----------
+
 # MAGIC %md 
 # MAGIC # Refactoring `%run` to a Relative Import
 # MAGIC 
