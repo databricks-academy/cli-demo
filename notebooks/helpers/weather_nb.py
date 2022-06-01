@@ -1,7 +1,8 @@
+# Databricks notebook source
 from pyspark.sql.session import SparkSession
 from pyspark.sql.functions import col
 
-class Temperature_PY:
+class Temperature_NB:
     def __init__(self, spark: SparkSession, low_path: str, high_path: str):
         self.spark = spark
         self.low_df = self.load(low_path)
@@ -26,3 +27,4 @@ class Temperature_PY:
     def report(self, df):
         df.summary().show()
         df.limit(10).show()
+

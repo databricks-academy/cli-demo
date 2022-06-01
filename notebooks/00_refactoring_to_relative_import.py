@@ -8,7 +8,7 @@
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC # Refactoring `%run` to a Relative Import
+# MAGIC # Refactoring `%run` to Use a Relative Import
 # MAGIC 
 # MAGIC Users that use Databricks notebooks for code development and production workloads are likely aware of the `%run` magic command. This command can be used to run another notebook's code within the same scope as the calling notebook, allowing objects such as functions, variables, and classes to be reused with common setup scripts. 
 # MAGIC 
@@ -27,7 +27,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./helpers/weather
+# MAGIC %run ./helpers/weather_nb
 
 # COMMAND ----------
 
@@ -36,9 +36,10 @@
 
 # COMMAND ----------
 
-todays_temp = Temperature(spark=spark,
-                         low_path="/databricks-datasets/weather/low_temps", 
-                         high_path="/databricks-datasets/weather/high_temps")
+todays_temp = Temperature_NB(spark=spark,
+                             low_path="/databricks-datasets/weather/low_temps", 
+                             high_path="/databricks-datasets/weather/high_temps")
+print(todays_temp)
 
 # COMMAND ----------
 
@@ -56,7 +57,28 @@ todays_temp.join()
 # MAGIC %md 
 # MAGIC ## Refactor the Relative Import
 # MAGIC 
-# MAGIC It might be the case that we want to use another python file for imports. Instead, we can just import from another file. Let's see what that looks like.
+# MAGIC It might be the case that we want to use another python file for imports. 
+# MAGIC 
+# MAGIC Instead, we can just import from another file. 
+# MAGIC 
+# MAGIC First, let's take a look at what our current working directory is.
+
+# COMMAND ----------
+
+# MAGIC %sh pwd
+
+# COMMAND ----------
+
+# MAGIC %md Next, let's take a look at the contents of the current directory
+
+# COMMAND ----------
+
+# MAGIC %sh ls ./
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC Lastly, let's take a look at the contents of the `helpers` folder.
 # MAGIC 
 # MAGIC We'll note that alongside the `weather_nb` used above is a `weather.py` file.
 
@@ -66,46 +88,63 @@ todays_temp.join()
 
 # COMMAND ----------
 
-# MAGIC %md 
-# MAGIC 
-# MAGIC From this, we can do a relative import, similar to how we would import on a laptop.
-# MAGIC 
-# MAGIC **NOTE**: This is the same Python class we previously imported with `%run`. Clear the notebook state before executing the next cell if you want to confirm relative imports are working.
+# MAGIC %md
+# MAGIC <img src="https://files.training.databricks.com/images/icon_warn_24.png"> <b>WARNING</b>: While the contents of `weather.py` and `weather_nb` may look identical (short of the change to the class name), if you look at <a href="https://github.com/databricks-academy/cli-demo/blob/published/notebooks/helpers/weather_nb.py" target="_new"> weather_nb.py</a> in GitHub, you will see a special comment (along with some others) that clearly establishes this python file as a notebook.
 
 # COMMAND ----------
 
-from helpers.weather_new import Temperature
+# MAGIC %md 
+# MAGIC 
+# MAGIC Knowing this, we can do a relative import, similar to how we would import on a laptop.
+# MAGIC 
+# MAGIC **NOTE**: This is the same Python class we previously imported with `%run`.
+
+# COMMAND ----------
+
+from helpers.weather import Temperature_PY
+
+# COMMAND ----------
+
+todays_temp = Temperature_PY(spark=spark,
+                             low_path="/databricks-datasets/weather/low_temps", 
+                             high_path="/databricks-datasets/weather/high_temps")
+print(todays_temp)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC Note that while this notebook is a Python file, relative imports will only work if the `.py` extension appears here.
+# MAGIC A natural conclusion would be that we can have simply imported the notebook (which is technically a Python file) using the same technique.
 # MAGIC 
-# MAGIC We can copy the file contents to a new file and accomplish this.
+# MAGIC But you can see in the cell below that this will only work for Python **files** and not Python **notebooks**.
 
 # COMMAND ----------
 
-todays_temp = Temperature(spark=spark,
-                         low_path="/databricks-datasets/weather/low_temps", 
-                         high_path="/databricks-datasets/weather/high_temps")
-
-# COMMAND ----------
-
-
+try:
+    from helpers.weather_nb import Temperature_NB
+    
+except Exception as e:
+    print("Failed as expected.")
+    print(e)
 
 # COMMAND ----------
 
 # MAGIC %md 
 # MAGIC ## Appending to System Path
 # MAGIC 
-# MAGIC Lastly, the current working directory in the Repo is included in the Python path. If you are working in a Repo root all imports for modules in the root directory and its sub directories will work.
+# MAGIC Lastly, the current working directory in the Repo is included in the Python path. 
 # MAGIC 
-# MAGIC If you are working in a subdirectory in the Repo and want to import modules from outside that directory you will need to append them to sys.path first. This can be done via the following Python command.
+# MAGIC If you are working in a Repo root all imports for modules in the root directory and its sub directories will work.
+# MAGIC 
+# MAGIC If you are working in a subdirectory in the Repo and want to import modules from outside that directory you will need to append them to sys.path first. 
+# MAGIC 
+# MAGIC This can be done via the following Python command.
 
 # COMMAND ----------
 
 import sys
-sys.path
+
+for path in sys.path:
+    print(path)
 
 # COMMAND ----------
 
@@ -114,22 +153,31 @@ sys.path.append(os.path.abspath('../wheel'))
 
 # COMMAND ----------
 
-sys.path
+for path in sys.path:
+    print(path)
 
 # COMMAND ----------
 
-# Import now that we've appended to path
+# MAGIC %md Now that the path has been updated, we can import a third version of Temperature
+
+# COMMAND ----------
+
 from weather.temp import Temperature
 
 # COMMAND ----------
 
 todays_temp = Temperature(spark=spark,
-                         low_path="/databricks-datasets/weather/low_temps", 
-                         high_path="/databricks-datasets/weather/high_temps")
+                          low_path="/databricks-datasets/weather/low_temps", 
+                          high_path="/databricks-datasets/weather/high_temps")
+print(todays_temp)
 
 # COMMAND ----------
 
-# MAGIC %md But that's not it. We could import from another repo as well! Let's clone the same repository with a new name `cli-demo-2`
+# MAGIC %md But that's not all.
+# MAGIC 
+# MAGIC We could import from another repo as well!
+# MAGIC 
+# MAGIC Let's clone the same repository with a new name `cli-demo-2`
 
 # COMMAND ----------
 
@@ -138,7 +186,9 @@ todays_temp = Temperature(spark=spark,
 # COMMAND ----------
 
 # MAGIC %md 
-# MAGIC From this, we see that our relative import will come from a directory two levels above our current working directory. We can add this to our our path:
+# MAGIC In the previous command, we see that our relative import will come from a directory two levels above our current working directory. 
+# MAGIC 
+# MAGIC Let's take another look at our current working directory
 
 # COMMAND ----------
 
@@ -146,16 +196,28 @@ todays_temp = Temperature(spark=spark,
 
 # COMMAND ----------
 
-username = spark.sql("SELECT current_user()").collect()[0][0]
+# MAGIC %md We can use this information to build a new path.
+# MAGIC 
+# MAGIC We can start by getting our current username as seen below.
+
+# COMMAND ----------
+
+username = spark.sql("SELECT current_user()").first()[0]
 print(username)
 
 # COMMAND ----------
 
-# Number 1.) Absolute add
+# MAGIC %md We can then use our `username` to update a new path to `sys.path`
+
+# COMMAND ----------
+
 import sys
 sys.path.append(f"/Workspace/Repos/{username}/cli-demo-2")
 
 # COMMAND ----------
 
-# Profit
+# MAGIC %md And from there, we can import the `Temperature` object from `wheel.weather.temp`
+
+# COMMAND ----------
+
 from wheel.weather.temp import Temperature
